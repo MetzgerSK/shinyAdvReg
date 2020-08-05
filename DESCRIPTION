@@ -1,0 +1,25 @@
+Type: Compendium
+Package: shinyAdvReg
+Title: What the Package Does (One Line, Title Case)
+Version: 0.0.1
+Authors@R: 
+    person(given = "Shawna",
+			 middle = "K.",
+			 family = "Metzger",
+			 role = c("aut", "cre"),
+			 email = "shawna@shawnakmetzger.com"
+			 comments = c(Affiliation = "Dept. of Politics, UVA")),
+Description: Various Shiny apps for regression models typically
+    taught in a MLE/GLM course.
+License: MIT
+Depends: 
+    dplyr,
+    DT,
+    MASS,
+    mlogit,
+    shiny,
+	shinyBS,
+    shinyjs,
+    shinythemes
+Encoding: UTF-8
+LazyData: true
