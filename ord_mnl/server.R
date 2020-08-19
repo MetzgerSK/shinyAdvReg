@@ -247,6 +247,26 @@ server <- function(input, output, session) {
     )
 	
 	
+    #************************************************
+    ## >> MIN/MAX ----
+    #*********************
+    runjs('
+        $("#dgpMax").hide();
+        
+        $("#dgpMin").click(function() {
+            $("#dgpChunk").slideUp();
+            $("#dgpMin").hide();
+            $("#dgpMax").show();
+        });
+        
+        $("#dgpMax").click(function() {
+            $("#dgpChunk").slideDown();
+            $("#dgpMax").hide();
+            $("#dgpMin").show();
+        });
+    ')
+    
+    
 	#******************************************
     # ((Housekeeping)) ----
     #*********************

@@ -1,11 +1,7 @@
 # UI START
 ui <- fluidPage(
-    # CSS: make h4 bolded
-    tags$head(tags$style("
-        h4{
-          font-weight:bold;
-        }
-    ")),
+    # Load up CSS: 
+    includeCSS("style.css"),
 	
     # Initialize
     useShinyjs(),   
@@ -30,43 +26,49 @@ ui <- fluidPage(
                     br(),
                     
 					# To break up the monotony
-                    div(style="border-radius:5px; background-color:#e0e0e0;
-                               padding: 5px 10px 10px;",
-						h4("DGP Options:"),
-						radioButtons("dgp", "Observations:",
-									 c("Ordered"= "ord_dgp",
-									   "Unordered" = "mnl_dgp"),
-									 selected = "ord_dgp"),
-						#Only show this panel if Ordered
-						conditionalPanel(
-							condition = "input.dgp == 'ord_dgp'",
-							
-							disabled(sliderInput("aHat", label = "Intercept \\(\\left(\\alpha \\right) \\)", 
-												 min = -1, max = 1, step = .1, value = 0)),
-							sliderInput("bHat", label = "Slope \\(\\left(\\beta \\right) \\)", 
-										min = -1, max = 1, step = .1, value = .5),
-							
-							bsTooltip("aHat", "Fixed at 0 for identifiability.")
-						),
-						#Only show this panel if Unordered
-						conditionalPanel(
-							condition = "input.dgp == 'mnl_dgp'",
-							
-							sliderInput("A_aHat", label = "Intercept CatA (compared to CatC) \\(\\left(\\alpha_A \\right) \\)", 
-										min = -1, max = 1, step = .1, value = .2),
-							sliderInput("A_bHat", label = "Slope CatA (compared to CatC) \\(\\left(\\beta_A \\right) \\)", 
-										min = -1, max = 1, step = .1, value = .5),
-							sliderInput("B_aHat", label = "Intercept CatB (compared to CatC) \\(\\left(\\alpha_B \\right) \\)", 
-										min = -1, max = 1, step = .1, value = -.2),
-							sliderInput("B_bHat", label = "Slope CatB (compared to CatC) \\(\\left(\\beta_B \\right) \\)", 
-										min = -1, max = 1, step = .1, value = .75)
-							
-						)
+                    div(id="dgpAll",
+						# Min/max for upper right, to make model controls easier to get at
+                        div(id="dgpMin", class="iconBx", icon("window-minimize")),
+                        bsTooltip("dgpMin", "Minimize", "right"),
+                        div(id="dgpMax", class="iconBx", icon("window-maximize")),
+                        bsTooltip("dgpMax", "Maximize", "right"),
+                        
+                        h4("DGP Options"),
+                        div(id="dgpChunk",
+    						radioButtons("dgp", "Observations:",
+    									 c("Ordered"= "ord_dgp",
+    									   "Unordered" = "mnl_dgp"),
+    									 selected = "ord_dgp"),
+    						#Only show this panel if Ordered
+    						conditionalPanel(
+    							condition = "input.dgp == 'ord_dgp'",
+    							
+    							disabled(sliderInput("aHat", label = "Intercept \\(\\left(\\alpha \\right) \\)", 
+    												 min = -1, max = 1, step = .1, value = 0)),
+    							sliderInput("bHat", label = "Slope \\(\\left(\\beta \\right) \\)", 
+    										min = -1, max = 1, step = .1, value = .5),
+    							
+    							bsTooltip("aHat", "Fixed at 0 for identifiability.")
+    						),
+    						#Only show this panel if Unordered
+    						conditionalPanel(
+    							condition = "input.dgp == 'mnl_dgp'",
+    							
+    							sliderInput("A_aHat", label = "Intercept CatA (compared to CatC) \\(\\left(\\alpha_A \\right) \\)", 
+    										min = -1, max = 1, step = .1, value = .2),
+    							sliderInput("A_bHat", label = "Slope CatA (compared to CatC) \\(\\left(\\beta_A \\right) \\)", 
+    										min = -1, max = 1, step = .1, value = .5),
+    							sliderInput("B_aHat", label = "Intercept CatB (compared to CatC) \\(\\left(\\alpha_B \\right) \\)", 
+    										min = -1, max = 1, step = .1, value = -.2),
+    							sliderInput("B_bHat", label = "Slope CatB (compared to CatC) \\(\\left(\\beta_B \\right) \\)", 
+    										min = -1, max = 1, step = .1, value = .75)
+    						)
+                        )
 					),
-                    
-                    br(), br(),
-                    
-                    h4("Model Options:") ,
+					
+                    br(),
+					
+                    h4("Model Options") ,
                     radioButtons("model", "Models:",
                                  c("Ordered Logit" = "ord_model",
                                    "Unordered Logit" = "mnl_model")),
@@ -118,11 +120,11 @@ ui <- fluidPage(
                 h4(class="simFyiHdr", "NOTE: must click 'Simulate!' on 'Main' tab first.", align = "left"),
                 plotOutput("dist")
             )
-                        
         ),
         
         # What should I see? ====
-        tabPanel("What should I see?", value="expl",   
+        tabPanel("What should I see?",   
+            h4(class="simFyiHdr", "NOTE: must click 'Simulate!' on 'Main' tab first.", align = "left"),
             uiOutput("wsis")
         )
     )
