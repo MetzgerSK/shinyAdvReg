@@ -37,11 +37,18 @@ server <- function(input, output, session) {
             )
         }
         
-        list(mod1, mod2, mod3, mod4, mc[[2]])
-        # 1: Poisson
-        # 2: NB
-        # 3: ZIP
-        # 4: ZINB
+        list(mod1, mod2, mod3, mod4, mc[[2]], mc[[3]])
+        # [1]: Poisson  (coefs/SE)
+        # [2]: NB       (coefs/SE)
+        # [3]: ZIP      (coefs/SE)
+        # [4]: ZINB     (coefs/SE)
+        # [5]: example data frame
+        # [6]: model objects
+        ## [1]-[input$reps], inside each:
+        ### [1]: Poisson  
+        ### [2]: NB       
+        ### [3]: ZIP      
+        ### [4]: ZINB    
         
     })
     
@@ -65,19 +72,27 @@ server <- function(input, output, session) {
             # Set seed
             set.seed(seed)
 
-            # Create empty holder object
+            # Create empty holder objects
             MC_results <- NULL
+            modObjs <- NULL
 
             # Loop, now that MC_results object exists
             for (i in 1:reps) {
+                # Pull data
                 temp_data <- get(dgp)(obs)
                 
-                MC_results[[i]] <- get(estimator)(temp_data)  
+                # Estimate model
+                returned <- get(estimator)(temp_data)  
                 
+                # Store results
+                MC_results[[i]] <- returned[[1]]
+                modObjs[[i]] <- returned[[2]]
+                
+                # Advance counter
                 incProgress(1/reps, detail = paste(i, " of ", reps))   
             }
             # return the results of the estimation.
-            return(list(MC_results, temp_data))
+            return(list(MC_results, temp_data, modObjs))
             
         })
     }
@@ -282,7 +297,26 @@ server <- function(input, output, session) {
         )
     })
 
+    # Update sim draw slider for rootogram
+    # Use # of reps from last goButton push
+    observeEvent(input$goButton, {
+        updateSliderInput(session, "selectSim_rooto", max=input$reps)
+    })
     
+    # Rootogram 
+    output$rootogram <- renderPlot({
+        input$goButton  # to get the render() to fire on reestimation
+        
+        # Pull corresponding index, given dropdown selection on rootogram tab
+        idx <- as.numeric(input$rooto_mods) 
+        
+        # Pull relv model obj for the selected sim draw
+        mod <- allresults()[[6]][[input$selectSim_rooto]][[idx]]
+     
+        # Do up the plot
+        rootogram(mod, xlab="Event Counts", main ="")
+    })       
+        
     #**********************************************
     # >> EQS, SELECTION SUMMARY -------------------
     #***********************
@@ -328,6 +362,26 @@ server <- function(input, output, session) {
         }
     )
 
+    
+    #************************************************
+    ## >> MIN/MAX ----
+    #*********************
+    runjs('
+        $("#dgpMax").hide();
+        
+        $("#dgpMin").click(function() {
+            $("#dgpChunk").slideUp();
+            $("#dgpMin").hide();
+            $("#dgpMax").show();
+        });
+        
+        $("#dgpMax").click(function() {
+            $("#dgpChunk").slideDown();
+            $("#dgpMax").hide();
+            $("#dgpMin").show();
+        });
+    ')
+    
     
     #******************************************
     # ((Housekeeping)) ----

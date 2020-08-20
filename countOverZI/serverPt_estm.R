@@ -5,7 +5,9 @@ est_over <- function(temp_data){
     mod3 <- pzi_model(temp_data)
     mod4 <- nbzi_model(temp_data)
 
-    list(mod1, mod2, mod3, mod4)
+    list( list(mod1[[1]], mod2[[1]], mod3[[1]], mod4[[1]]),  # coefs/SEs
+          list(mod1[[2]], mod2[[2]], mod3[[2]], mod4[[2]])   # actual mod objs
+    )
 }
     
 ## > INDV ESTM FUNCTIONS ##################
@@ -19,7 +21,7 @@ p_model <- function(temp_data) {
     p.se <- sqrt(diag(vcov(p_mod)))
         names(p.se)   <- c("se.intc", "se.x")
     
-    c(p.coef, p.se)
+    list(c(p.coef, p.se), p_mod)
     
 }
 
@@ -32,7 +34,8 @@ nb_model <- function(temp_data){
         names(nb.coef) <- c("b.intc",  "b.x",  "disp")  
     nb.se <- c(sqrt(diag(vcov(nb_mod))), nb_mod$SE.theta)
         names(nb.se)   <- c("se.intc", "se.x", "se.disp")
-    c(nb.coef, nb.se)
+    
+    list(c(nb.coef, nb.se), nb_mod)
     
     # Note: R reports theta, the variance.  Stata reports alpha = 1/theta.
 }
@@ -48,7 +51,8 @@ pzi_model <- function(temp_data) {
     pzi.se <- sqrt(diag(vcov(pzi_mod)))
         names(pzi.se)   <- c("se.intc", "se.x", 
                              "infl.se.intc", "infl.se.z")
-    c(pzi.coef, pzi.se)
+    
+    list(c(pzi.coef, pzi.se), pzi_mod)
 
 }  
 
@@ -69,7 +73,7 @@ nbzi_model <- function(temp_data) {
                              "infl.se.intc",  "infl.se.z",
                              "se.disp")
    
-    c(nbzi.coef, nbzi.se)
+    list(c(nbzi.coef, nbzi.se), nbzi_mod)
     
     # Note: R reports theta, the variance.  Stata reports alpha = 1/theta.
     

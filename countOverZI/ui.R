@@ -1,11 +1,7 @@
 # UI START
 ui <- fluidPage(
-    # CSS: make h4 bolded
-    tags$head(tags$style("
-        h4{
-          font-weight:bold;
-        }
-    ")),
+    # Load up CSS: 
+    includeCSS("style.css"),
     
     # Initialize
     useShinyjs(),   
@@ -30,51 +26,58 @@ ui <- fluidPage(
                     br(),
                     
                     # To break up the monotony
-                    div(style="border-radius:5px; background-color:#e0e0e0;
-                               padding: 5px 10px 10px;",
-                        h4("DGP Options:"),
-                        fluidRow(
-                            column(6,
-                                radioButtons("dgp", "Count's Distribution:",
-                                             c("Poisson"= "p_dgp",
-                                               "Negative Binomial" = "nb_dgp"),
-                                             selected = "p_dgp")
+                    div(id="dgpAll",
+                        # Min/max for upper right, to make model controls easier to get at
+                        div(id="dgpMin", class="iconBx", icon("window-minimize")),
+                        bsTooltip("dgpMin", "Minimize", "right"),
+                        div(id="dgpMax", class="iconBx", icon("window-maximize")),
+                        bsTooltip("dgpMax", "Maximize", "right"),
+                        
+                        h4("DGP Options"),
+                        div(id="dgpChunk",
+                            fluidRow(
+                                column(6,
+                                    radioButtons("dgp", "Count's Distribution:",
+                                                 c("Poisson"= "p_dgp",
+                                                   "Negative Binomial" = "nb_dgp"),
+                                                 selected = "p_dgp")
+                                ),
+                                column(6,
+                                    selectInput("z_dgp", "Zero-Inflated Component?", 
+                                                choices = c("Yes" = "zi_dgp", 
+                                                            "No" = "non_dgp"),
+                                                selected= "non_dgp")
+                                )
                             ),
-                            column(6,
-                                selectInput("z_dgp", "Zero-Inflated Component?", 
-                                            choices = c("Yes" = "zi_dgp", 
-                                                        "No" = "non_dgp"),
-                                            selected= "non_dgp")
+                        
+                            #Show this panel regardless
+                            sliderInput("aHat", label = "Intercept \\(\\left(\\alpha \\right) \\)", 
+                                        min = -1, max = 1, step = .1, value = .2),
+                            sliderInput("bHat", label = HTML("<em>x</em>'s Slope \\(\\left(\\beta_x \\right) \\)"), 
+                                        min = -1, max = 1, step = .1, value = .5),
+                                
+                            #Only show this panel if Negative Binomial Distribution
+                            conditionalPanel(
+                                condition = "input.dgp == 'nb_dgp'",
+                                
+                                sliderInput("dispers", label = "Dispersion \\(\\left(\\theta\\right)\\)", 
+                                            min=.1, max=3, step=.25, value =.5) 
+                            ),
+                            #Only show this panel if Zero-Inflated
+                            conditionalPanel(
+                                condition = "input.z_dgp == 'zi_dgp'",
+                                
+                                sliderInput("b0z", label = "Inflation: Intercept", 
+                                            min = -1, max =1, step = .1, value = .3),
+                                sliderInput("b1z", label = HTML("Inflation: <em>z</em>'s Slope"), 
+                                            min = -1, max =1, step = .1, value = .8)
                             )
-                        ),
-                    
-                        #Show this panel regardless
-                        sliderInput("aHat", label = "Intercept \\(\\left(\\alpha \\right) \\)", 
-                                    min = -1, max = 1, step = .1, value = .2),
-                        sliderInput("bHat", label = HTML("<em>x</em>'s Slope \\(\\left(\\beta_x \\right) \\)"), 
-                                    min = -1, max = 1, step = .1, value = .5),
-                            
-                        #Only show this panel if Negative Binomial Distribution
-                        conditionalPanel(
-                            condition = "input.dgp == 'nb_dgp'",
-                            
-                            sliderInput("dispers", label = "Dispersion \\(\\left(\\theta\\right)\\)", 
-                                        min=.1, max=3, step=.25, value =.5) 
-                        ),
-                        #Only show this panel if Zero-Inflated
-                        conditionalPanel(
-                            condition = "input.z_dgp == 'zi_dgp'",
-                            
-                            sliderInput("b0z", label = "Inflation: Intercept", 
-                                        min = -1, max =1, step = .1, value = .3),
-                            sliderInput("b1z", label = HTML("Inflation: <em>z</em>'s Slope"), 
-                                        min = -1, max =1, step = .1, value = .8)
                         )
                     ),
                     
-                    br(), br(),
+                    br(),
                     
-                    h4("Model Options:"),
+                    h4("Model Options"),
                     fluidRow(
                         column(6,
                             radioButtons("model", "Models:",
@@ -138,11 +141,55 @@ ui <- fluidPage(
                 
                 plotOutput("dist")
             )
-        ) #,
+        ),
+        
+        # Rootograms ====
+        tabPanel("Model Fit: Rootograms",
+            sidebarPanel(
+                selectInput("rooto_mods", "Model",
+                            c("Poisson"=1   , "Neg. Binomial"=2,
+                              "ZI Poisson"=3, "ZI Neg. Binomial"=4)
+                )
+            ),
+            mainPanel(style="margin-top:10px;",
+                h4(class="simFyiHdr", "NOTE: must click 'Simulate!' on 'Main' tab first.", align = "left"),
+                conditionalPanel("input.goButton>0",
+                    fluidRow(
+                        column(4,
+                            sliderInput("selectSim_rooto", label = "Select Simulation Draw", 
+                                        min = 1, max = 1000, step = 1, value = 1)
+        						# ^ The max value for this updates in server.R, 
+        						# right above the rootogram chunk based on the 
+        						# value of input$reps for last goButton press
+                        ),
+    					column(8,
+    					    HTML("
+    					        <ul style='margin:0px;padding-left: 18px;'>
+        					        <li><span style='font-weight:bold;color:#B61A51;'>Red Line</span>: Predicted counts (by model)
+        					        <li><span style='font-weight:bold;color:#888888;'>Gray bars</span>: Actual counts (in dataset)
+    					        </ul>
+    					        <hr style='margin-top:5px;margin-bottom:5px;'>
+    					        <em>y</em>-axis: number of observations whose DV equals this count value (= <em>x</em>-axis), square rooted"
+    					   )
+    					)
+                    ),
+                    plotOutput("rootogram"),
+    					
+    				h5(strong("Fit Interpretation")),
+    				HTML("<ul>
+        				    <li>If bars <em>touch</em> <em>y</em> = 0 line: model predicts <strong>correct</strong> number of observations with this count value ⇒ ideal scenario
+        			        <li>If bars <em>above</em> <em>y</em> = 0 line: model predicts <strong>more</strong> observations with this count value than there actually are in the dataset
+        			        <li>If bars <em>below</em> <em>y</em> = 0 line: model predicts <strong>fewer</strong> observations with this count value than there actually are in the dataset
+    				     </ul>"
+    				),
+                )
+            )
+        )#,
         
         ## TO DO IN FUTURE
         # What should I see? ====
-        # tabPanel("What should I see?", value="expl",   
+        # tabPanel("What should I see?", 
+        #     h4(class="simFyiHdr", "NOTE: must click 'Simulate!' on 'Main' tab first.", align = "left"),
         #     uiOutput("wsis")
         # )
         #         

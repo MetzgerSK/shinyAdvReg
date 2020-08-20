@@ -1,3 +1,4 @@
+install.packages("countreg", repos="http://R-Forge.R-project.org")
 install.packages('dplyr')
 install.packages('DT')
 install.packages('MASS')

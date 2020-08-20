@@ -10,10 +10,12 @@ library(MASS)
 library(nnet)
 library(shiny)
 library(shinyjs)
+library(shinyBS)
 
 library(dplyr)
 library(pscl)
 library(DT)
+library(countreg)
 
 # Referenced with ::s
 ## shinythemes
