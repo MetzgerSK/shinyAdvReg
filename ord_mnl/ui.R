@@ -78,6 +78,10 @@ ui <- fluidPage(
                 ),
                 
                 mainPanel(
+                    conditionalPanel(condition="input.goButton == 0", 
+                        br(),br(),
+                        p("Set values at left, click 'Run Simulation' button, and wait 15-90 seconds for results to appear.")
+                    ),
                     conditionalPanel(condition="input.goButton > 0",
                         h4("Overview"),
                         uiOutput("selections"),
