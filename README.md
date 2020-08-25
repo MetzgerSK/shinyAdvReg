@@ -12,6 +12,9 @@ By being in a GitHub repo, the apps can be run directly via [Binder](https://myb
 ### Binary DV
 - `mleLogit`&nbsp;&nbsp;&nbsp;<span style="vertical-align:middle;">[![Launch Rstudio Binder](http://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/MetzgerSK/shinyElement/major?urlpath=shiny/mleLogit/)</span><br>
 > See <a href="https://github.com/MetzgerSK/shinyElement#ch-2">`shinyElements/mleLogit`</a>
+
+- `lp_hetOV`<span style="font-size:0.75em;">:pencil2:</span>&nbsp;&nbsp;&nbsp;<span style="vertical-align:middle;">[![Launch Rstudio Binder](http://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/MetzgerSK/shinyAdvReg/major?urlpath=shiny/lp_hetOV/)</span> <span style="font-size:0.75em;">:hourglass_flowing_sand:</span><br>
+Examines the impact of (a) omitting a relevant covariate and/or (b) heteroskedastic errors on the estimates from binary models.  Features basic logit/probit models, as well as heteroskedastic logit/probit models.
 	
 ### Ordinal DV
 - `ord_mnl` <span style="font-size:0.75em;">:blue_book::pencil2:</span>&nbsp;&nbsp;&nbsp;<span style="vertical-align:middle;">[![Launch Rstudio Binder](http://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/MetzgerSK/shinyAdvReg/major?urlpath=shiny/ord_mnl/)</span> <span style="font-size:0.75em;">:hourglass_flowing_sand:</span><br>
