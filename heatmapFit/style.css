@@ -1,0 +1,37 @@
+/* Much nicer way of coding the div-in-div trick  */
+.inline-block-center {
+	text-align: center;
+}
+.inline-block-center div {
+	display: inline-block;
+	text-align: left;
+}
+
+/* bold h4 */
+h4{
+	font-weight: 700;
+}
+
+/* making progress bar not be microscopic */
+.progress{
+	margin-bottom: 0px;
+	height: 20px;
+}
+.progress-bar{
+	background-color: #335eb7;
+	font-size: 13px !important;
+	line-height: 20px !important;
+}
+
+/* Run button hover */
+#runBtn:hover{
+	background-color: #960000 !important;
+}
+
+/* DIV: DV warning properties */
+#dvWarn{
+	margin-top:-15px; 
+	margin-bottom:25px;
+	font-size:85%; 
+	color: #FF0000;
+}

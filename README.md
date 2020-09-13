@@ -15,6 +15,8 @@ By being in a GitHub repo, the apps can be run directly via [Binder](https://myb
 
 - `lp_hetOV`<span style="font-size:0.75em;">:pencil2:</span>&nbsp;&nbsp;&nbsp;<span style="vertical-align:middle;">[![Launch Rstudio Binder](http://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/MetzgerSK/shinyAdvReg/major?urlpath=shiny/lp_hetOV/)</span> <span style="font-size:0.75em;">:hourglass_flowing_sand:</span><br>
 Examines the impact of (a) omitting a relevant covariate and/or (b) heteroskedastic errors on the estimates from binary models.  Features basic logit/probit models, as well as heteroskedastic logit/probit models.
+- `heatmapFit`&nbsp;&nbsp;&nbsp;<span style="vertical-align:middle;">[![Launch Rstudio Binder](http://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/MetzgerSK/shinyAdvReg/major?urlpath=shiny/heatmapFit/)</span><br>
+Convenience UI for <a href="https://cran.r-project.org/package=heatmapFit">`heatmapFit`</a> package, as discussed in Esarey and Pierce's <a href="https://doi.org/10.1093/pan/mps026">"Assessing Fit Quality and Testing for Misspecification in Binary-Dependent Variable Models"</a> (2012, <em>Political Analysis</em>).  User uploads dataset with predicted probabilities and observed 0/1 DV, and in return, the app outputs the heatmap fit statistic and the associated plot (plus an option to export the plot).  Written with Stata users in mind.
 	
 ### Ordinal DV
 - `mleOlogit`&nbsp;&nbsp;&nbsp;<span style="vertical-align:middle;">[![Launch Rstudio Binder](http://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/MetzgerSK/shinyAdvReg/major?urlpath=shiny/mleOlogit/)</span><br>
