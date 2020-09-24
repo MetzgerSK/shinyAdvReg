@@ -466,7 +466,7 @@ server <- function(input, output, session){
     
     # DT: ACTUAL DATASET ====
     output$data_table <- DT::renderDataTable({
-        # To ensure things willrender, in case the user clicks the "Data" tab
+        # To ensure things will render, in case the user clicks the "Data" tab
         # before gening dataset
         req(input$dataGenButton)
         
@@ -485,7 +485,9 @@ server <- function(input, output, session){
             # footer
             tfoot(
                 tr(
-                    th(colspan="4", paste0("TOTAL (across all ", n, " observations): ", round(sum(dat$logLH_i),5) )) 
+                    th(colspan="4", 
+                       paste0("TOTAL (across all ", n, " observations): ", 
+                              round(sum(dat$logLH_i),5) )) 
                 )
             )
         ))
@@ -544,7 +546,7 @@ server <- function(input, output, session){
     observeEvent(input$resetButton, {
         reset("aHat")
         reset("b1Hat")
-        reset("sigmaHat")
+        reset("tauSlider")
     })
     
     # Checking the cutpoint sliders, ensuring the two aren't equal
@@ -567,19 +569,6 @@ server <- function(input, output, session){
             # Update the slider's value
             updateSliderInput(session, "tauHats", value=c(tau1,tau2))
             
-        }
-    })
-    
-    # Tooltips for cutpoint slider
-    
-    # obEv: sigma slider ====
-    ## MISC: toggle whether sigma slider's enabled or not, based on checkbox
-    observeEvent(input$sigmaMatch, {
-        toggleState("sigmaHat", condition=input$sigmaMatch==FALSE)
-        
-        if(input$sigmaMatch==TRUE){
-            updateSliderInput(session, "sigmaHat", value=1.5)
-            addTooltip(session, "sigmaHat", "Disabled to make DGP <br/> same as <code>leastSq</code>. <br/>-- True <em>&sigma;</em> = 1.5 --")    
         }
     })
     
