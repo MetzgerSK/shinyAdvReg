@@ -25,6 +25,8 @@ Focuses on the intuition behind maximum likelihood using an ordered logit model.
 Examines the ramifications of estimating an ordered logit model using truly nominal data, and a multinomial logit model using truly ordinal data.
 
 ### Nominal DV
+- `mleMNL`&nbsp;&nbsp;&nbsp;<span style="vertical-align:middle;">[![Launch Rstudio Binder](http://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/MetzgerSK/shinyAdvReg/major?urlpath=shiny/mleMNL/)</span><br>
+Focuses on the intuition behind maximum likelihood using a multinomial logit model.  Students manually find the maximum of the model's likelihood function for a toy set of data with three categories.  `mleMNL` displays two graphs with the proposed best-fit line and fake data for Category A and Category B, and these lines update as students select different intercept + slope values for each category.
 - `ord_mnl`
 > See [above](https://github.com/MetzgerSK/shinyAdvReg#ordinal-dv).
 
