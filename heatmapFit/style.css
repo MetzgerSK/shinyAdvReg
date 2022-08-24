@@ -28,8 +28,8 @@ h4{
 	background-color: #960000 !important;
 }
 
-/* DIV: DV warning properties */
-#dvWarn{
+/* Var warning properties */
+.varWarn{
 	margin-top:-15px; 
 	margin-bottom:25px;
 	font-size:85%; 

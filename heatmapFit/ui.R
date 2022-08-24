@@ -28,14 +28,20 @@ ui <- fluidPage(
             # Things to show after user's uploaded dataset
             shinyjs::hidden(div(id="postUpload", 
                 # Dropdown for predicted quant
-                varSelectInput("predQOI", label="Predicted DV \\((\\hat{y})\\)", 
+                varSelectInput("predQOI", label="Predicted DV \\((\\widehat{ \\Pr \\left( y=1 \\right) })\\)", 
                                data=NULL, multiple=FALSE),
+                shinyjs::hidden(
+                    div(id="predPrWarn", class="varWarn", style="",
+                        HTML("<strong>Warning</strong>: invalid probability
+                             values detected, will throw error.")
+                    )
+                ),
 
                 # Dropdown for observed DV
                 varSelectInput("obsvY", label="Observed DV \\((y)\\)", 
                                data=NULL, multiple=FALSE),
                 shinyjs::hidden(
-                    div(id="dvWarn", style="",
+                    div(id="dvWarn", class="varWarn", style="",
                         HTML("<strong>Warning</strong>: non-binary DV detected, will throw error.")
                     )
                 ),
@@ -53,7 +59,7 @@ ui <- fluidPage(
                             strong("Graph in color?"),
                             switchInput("color",
                                         onLabel="Yes", offLabel="No",
-                                        size="small", value=TRUE)
+                                        size="small", value=FALSE)
                         )
                     ),
                     column(6,

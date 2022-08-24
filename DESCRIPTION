@@ -8,18 +8,33 @@ Authors@R:
 			 family = "Metzger",
 			 role = c("aut", "cre"),
 			 email = "shawna@shawnakmetzger.com"
-			 comments = c(Affiliation = "Dept. of Politics, UVA")),
+			 comments = c(Affiliation = "Dept. of Political Science, UB")),
 Description: Various Shiny apps for regression models typically
     taught in a MLE/GLM course.
 License: MIT
 Depends: 
+    countreg,
     dplyr,
     DT,
+    ggplot2,
+    glmx,
+    haven,
+    magrittr,
     MASS,
     mlogit,
+    maxLik,
+    msm,
+    nnet,
+    pscl,
+    remotes,
+    rlang,
     shiny,
 	shinyBS,
+	shinycssloaders,
+	shinyjqui,
     shinyjs,
-    shinythemes
+    shinythemes,
+    shinyWidgets,
+    stargazer
 Encoding: UTF-8
 LazyData: true
