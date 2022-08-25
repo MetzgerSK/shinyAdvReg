@@ -259,15 +259,20 @@ server <- function(input, output, session){
         # Do pred graph quick (b/c ln(t) = XB)
         tHat <- data.frame(x1=dat$x1) %>%
                     mutate(tHat=(input$aHat + input$b1Hat*x1))        
+        # axis labels
+        xAx <- "<em>x</em>"
+        yAx <- "ln(<em>t</em>)"
         
         # graph
         ggplot(data=dat) +
                 geom_point(aes(x=x1, y=log(t)), color="blue", alpha=0.9) +
                 geom_line(data=tHat, aes(x=x1, y=tHat), color="red") +
-            labs(title="x vs. ln(t)",
-                 x="x", 
-                 y="ln(t)") +
-            theme(plot.title = element_text(hjust = 0.5, face = "bold", family = paste0(font))
+            labs(title=paste0(xAx, " vs. ", yAx),
+                 x=xAx, 
+                 y=yAx) +
+            theme(plot.title   = element_markdown(hjust = 0.5, face = "bold", family = font),
+                  axis.title.x = element_markdown(family=font),
+                  axis.title.y = element_markdown(family=font)
                  ) 
 
     })
@@ -286,9 +291,11 @@ server <- function(input, output, session){
             stat_function(fun = dgumbmin, args = list(location = 0, scale = 1/input$shape),
                           color = "#FF4040", size = 1, linetype="dashed",
                           inherit.aes=FALSE) + 
-            labs(title = "Distance between ln(tHat) and ln(t)",
+            labs(title = "Distance between ln(tHat) and ln(<em>t</em>)",
                  x     = "Distance (uHat)") + 
-            theme(plot.title = element_text(hjust = 0.5, face = "bold", family = paste0(font))
+            theme(plot.title = element_markdown(hjust = 0.5, face = "bold", family = font),
+                  axis.title.x = element_text(family=font),
+                  axis.title.y = element_text(family=font)
                  )
             })
     

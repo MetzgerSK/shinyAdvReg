@@ -338,7 +338,9 @@ server <- function(input, output, session){
                  y=expression("Pr("*italic("y")~"= Cat. A)")
                 ) +
             coord_cartesian(ylim=c(0,1), xlim=c(-5,5)) + 
-            theme(plot.title = element_text(hjust = 0.5, face = "bold", family = paste0(font))
+            theme(plot.title = element_text(hjust = 0.5, face = "bold", family = font),
+                  axis.title.x = element_text(family=font),
+                  axis.title.y = element_text(family=font)
                  )
         
         # If there's more than 125 observations, add rugs
@@ -372,11 +374,13 @@ server <- function(input, output, session){
         gg<- ggplot() +
                 geom_point(aes(x=dat$x1, y=dat$yAdj), color="dodgerblue3", alpha=0.6) +
                 geom_line(aes(x=seq(-5,5,0.05), y=yHat), col = "red") +
-            labs(x="x", 
+            labs(x=expression(italic("x")), 
                  y=expression("Pr("*italic("y")~"= Cat. B)")
                 ) +
             coord_cartesian(ylim=c(0,1), xlim=c(-5,5)) + 
-            theme(plot.title = element_text(hjust = 0.5, face = "bold", family = paste0(font))
+            theme(plot.title = element_text(hjust = 0.5, face = "bold", family = font),
+                  axis.title.x = element_text(family=font),
+                  axis.title.y = element_text(family=font)
                  )
         
         # If there's more than 125 observations, add rugs

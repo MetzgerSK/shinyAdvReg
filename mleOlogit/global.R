@@ -8,3 +8,7 @@ library(shinycssloaders)
 library(shinyjqui)
 library(MASS)
 library(dplyr)
+library(showtext)
+
+# Install Roboto for ggplot2
+font_add_google("Roboto", "Roboto")

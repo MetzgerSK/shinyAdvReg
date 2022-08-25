@@ -9,3 +9,7 @@ library(shinyjqui)
 library(MASS)
 library(dplyr)
 library(mlogit)
+library(showtext)
+
+# Install Roboto for ggplot2
+font_add_google("Roboto", "Roboto")

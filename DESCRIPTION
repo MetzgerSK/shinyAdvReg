@@ -17,6 +17,7 @@ Depends:
     dplyr,
     DT,
     ggplot2,
+    ggtext,
     glmx,
     haven,
     magrittr,
@@ -35,6 +36,7 @@ Depends:
     shinyjs,
     shinythemes,
     shinyWidgets,
+    showtext,
     stargazer
 Encoding: UTF-8
 LazyData: true
