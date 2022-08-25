@@ -292,19 +292,77 @@ server <- function(input, output, session){
                  )
             })
     
-    # OUTPUT: Print the actual model    
+    # RAW MODEL ====
+    ## Print the actual results  
     output$modObj <- renderPrint({ 
         summary(all()[[3]]) 
     })
     
-    ## OUTPUT: PRINT CURRENT GUESS' LLH VALUE
+    # STARGAZER TABLE ====
+    output$sgzTable <- renderUI({
+    
+        # number of places to round to
+        places <- 2
+
+        # Will need to do all this manually, so get model in shorter-to-ref obj
+        mod <- all()[[3]]
+        mod.sum <- mod %>% summary %>% .$table 
+        
+        # Fake mod to trick stargazer
+        dat <- all()[[1]]
+        dat <- dat %>%
+                mutate(fake1 = rnorm(n()))
+        modFake <- lm(t ~ x1 + fake1, data=dat)
+        
+        # get the raw HTML
+        tab <- stargazer(modFake, # to trick stargazer into working
+                    type="html", 
+                    covariate.labels = c("<em>x</em>", "Constant", "Shape (<em>p</em>)"),
+                    coef = list(c(mod.sum[2,1], mod.sum[1,1], exp(-mod.sum[3,1]))),
+                    se   = list(c(mod.sum[2,2], mod.sum[1,2], msm::deltamethod(~ 1/exp(x1), mod.sum[3,1], (mod.sum[3,2])^2))),  
+                    title="Model Results",
+                    dep.var.labels  = "DV: <em>t</em>",
+                    dep.var.caption = "",
+                    intercept.bottom=FALSE,
+                    add.lines = list(c("ln<em>L</em>", 
+                                        round(logLik(mod), places))
+                                ),
+                    keep.stat = c("N"),
+                    report="vcs",               # just for you, Neal!
+                    omit.table.layout="n",
+                    column.sep.width = "2pt",
+                    digits=places,
+                    digits.extra=4
+            )
+        
+        # Nuke final table line
+        tab <- gsub('<tr><td colspan="2" style="border-bottom: 1px solid black"></td></tr></table>',
+                    '<tr><td colspan="2" style="border-bottom: 0px solid black"></td></tr></table>',
+                    tab)
+        
+        # Change wording to n (brute forcing, rather than arguing with stargazer) 
+        # + line between lnL and n
+        tab <- gsub('<tr><td style="text-align:left">Observations</td>',
+                    '<tr style="border-top: 1px solid black"><td style="text-align:left"><em>n</em></td>',
+                    tab)
+        
+        # Bump width of table
+        tab <- gsub('<table style="text-align:center">',
+                    '<table style="text-align:center; width:10em;">',
+                    tab)
+        
+        # return as wrapped HTML
+        HTML(tab)
+    })
+    
+    # CURRENT GUESS' LLH VALUE ====
     output$llh <- renderUI({
         withMathJax(
             paste0('\\(', round(obsLLH()[[1]], 5), '\\)')
         )
     })
     
-    # OUTPUT: PRINT ALL-TIME MAX LLH
+    # ALL-TIME MAX LLH ====
     output$bestGuess <- renderUI({
         allTime() # to force update JIC, in case last slider values are the winner and the reactive doesn't fire
         withMathJax(
@@ -312,7 +370,7 @@ server <- function(input, output, session){
         )
     })
     
-    # OUTPUT: PRINT ESTIMATES FOR ALL-TIME MAX LLH
+    # PRINT ESTIMATES FOR ALL-TIME MAX LLH ====
     output$bestGuess_ests <- renderUI({
         allTime() # to force update JIC, in case last slider values are the winner and the reactive doesn't fire
         withMathJax(
@@ -322,7 +380,7 @@ server <- function(input, output, session){
         )
     })
     
-    # OUTPUT: PRINT TRUE SLOPE + INTERCEPT + SHAPE (BASED ON ESTIMATED MODEL) ====
+    # PRINT TRUE SLOPE + INTERCEPT + SHAPE (BASED ON ESTIMATED MODEL) ====
     output$trueEsts <- renderUI({
         withMathJax(
             paste0('\\( \\alpha =', round(all()[[2]][1], 3), 
@@ -331,7 +389,7 @@ server <- function(input, output, session){
         )
     })
     
-    # OUTPUT: PRINT ANSWER + TRUE LLH ====
+    # PRINT ANSWER + TRUE LLH ====
     output$trueLLH <- renderUI({ 
         withMathJax(
             paste0('\\(', round(all()[[4]], 5), ' \\)')

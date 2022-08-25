@@ -54,7 +54,7 @@ ui <- fluidPage(
                             h3(id="formal_instrText", "Now: find the slope and intercept that gives you the largest log-likelihood value"),
                             sliderInput("aHat", label = "Intercept \\(\\left(\\alpha \\right) \\)", 
                                         min = -4, max = 4, step = 0.05, value = 1.5),
-                            sliderInput("b1Hat", label = "x's Coeff \\(\\left(\\beta_1 \\right) \\)",
+                            sliderInput("b1Hat", label = HTML("<em>x</em>'s Coeff \\(\\left(\\beta_1 \\right) \\)"),
                                         min = -4, max = 4, step = 0.05, value = -0.75),
                             sliderInput("shape", label = "Shape Parameter \\(\\left(p \\right) \\)",
                                         min = 0.1, max = 3, step = 0.05, value = 1.1),
@@ -162,9 +162,17 @@ ui <- fluidPage(
                         
                         br(),
 
+                        # The actual results
                         hidden(
                             div(id="wrapper_rslts",
-                                verbatimTextOutput("modObj")
+                                tabsetPanel(
+                                    tabPanel("Table",
+                                        uiOutput("sgzTable") %>% withSpinner(., type = 7, color = "#325D88"),
+                                    ),
+                                    tabPanel("R Output",
+                                        verbatimTextOutput("modObj")
+                                    )
+                                )
                             )
                         )
                     )
