@@ -61,8 +61,8 @@ Focuses on the intuition behind maximum likelihood using a Weibull duration mode
 There are additional Shiny apps for linear regression models [here](https://github.com/MetzgerSK/shinyElement).
 
 ## Hat Tips
-- :blue_book: = original simulation code from [Carsey](https://politicalscience.unc.edu/staff/https-sites-google-com-view-tom-carsey-home/) and [Harden](https://jharden.nd.edu/)'s [*Monte Carlo Simulation and Resampling Methods for Social Science*](https://us.sagepub.com/en-us/nam/monte-carlo-simulation-and-resampling-methods-for-social-science/book241131)
-- :pencil2: = conversion from C&H's code to Shiny app by [Janet Lawler](https://politics.virginia.edu/janet-lawler/), Metzger's RA.  Final streamlining, spiffing, adding of pedagogical details by Metzger.
+- :blue_book: = original simulation code from [Carsey](https://sites.google.com/view/tom-carsey/home) and [Harden](https://jharden.nd.edu/)'s [*Monte Carlo Simulation and Resampling Methods for Social Science*](https://us.sagepub.com/en-us/nam/monte-carlo-simulation-and-resampling-methods-for-social-science/book241131)
+- :pencil2: = conversion from C&H's code to Shiny app by [Janet Lawler](https://uh.edu/honors/about/faculty-staff/lawler_janet.php), Metzger's then-RA at UVA.  Final streamlining, spiffing, adding of pedagogical details by Metzger.
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
