@@ -82,7 +82,7 @@ server <- function(input, output, session) {
                 # See if there was a convergence problem anywhere; 
                 # toss the draw, if so; otherwise, adv. the counter
                 suppressWarnings(
-                    if(!is.na(MC_results[[i]])){
+                    if(!(is.na(MC_results[[i]]) %>% all)){
                         incProgress(1/reps, detail = paste(i, " of ", reps))   
                         i <- i + 1
                     }
