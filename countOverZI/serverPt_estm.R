@@ -59,7 +59,7 @@ pzi_model <- function(temp_data) {
 # ZINB ====
 nbzi_model <- function(temp_data) {
     
-    nbzi_mod <- zeroinfl(y ~ x | z, dist= "negbin", data = temp_data) 
+    nbzi_mod <- pscl::zeroinfl(y ~ x | z, dist= "negbin", data = temp_data) 
 
     nbzi.coef <- c(coef(nbzi_mod), nbzi_mod$theta) 
         names(nbzi.coef) <- c("b.intc",  "b.x", 

@@ -1,4 +1,7 @@
-install.packages('countreg', repos='http://R-Forge.R-project.org')
+install.packages("remotes")
+remotes::install_github("alexpghayes/distributions3", 						# have to install this first or else countreg won't install successfully 
+						ref="92fa9de94770544b9a59554936cbddb4cf5630fd")		# main branch's latest commit as of 26JUL24
+remotes::install_version('topmodels', version="0.3-0", repos='http://R-Forge.R-project.org')	# most recent version as of 26JUL24
 install.packages('dplyr')
 install.packages('DT')
 install.packages('ggplot2')

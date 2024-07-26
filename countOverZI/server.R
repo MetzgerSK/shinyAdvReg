@@ -312,9 +312,9 @@ server <- function(input, output, session) {
         
         # Pull relv model obj for the selected sim draw
         mod <- allresults()[[6]][[input$selectSim_rooto]][[idx]]
-     
+
         # Do up the plot
-        rootogram(mod, xlab="Event Counts", main ="")
+        rootogram(mod, xlab="Event Counts", main ="", confint = FALSE)
     })       
         
     #**********************************************

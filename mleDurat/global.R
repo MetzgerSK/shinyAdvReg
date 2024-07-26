@@ -10,6 +10,7 @@ library(ggplot2)
 library(ggtext)
 library(magrittr)
 library(showtext)
+library(stargazer)
 
 # Install Roboto for ggplot2
 font_add_google("Roboto", "Roboto")

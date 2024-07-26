@@ -15,7 +15,7 @@ library(shinyBS)
 library(dplyr)
 library(pscl)
 library(DT)
-library(countreg)
+library(topmodels)
 
 # Referenced with ::s
 ## shinythemes
