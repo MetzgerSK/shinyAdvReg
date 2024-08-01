@@ -78,19 +78,31 @@ server <- function(input, output, session) {
 
             # Loop, now that MC_results object exists
             for (i in 1:reps) {
-                # Pull data
-                temp_data <- get(dgp)(obs)
-                
-                # Estimate model
-                returned <- get(estimator)(temp_data)  
-                
-                # Store results
-                MC_results[[i]] <- returned[[1]]
-                modObjs[[i]] <- returned[[2]]
-                
-                # Advance counter
-                incProgress(1/reps, detail = paste(i, " of ", reps))   
+                # Ensure there's nothing exceptionally bizarre for the SEs
+                while(TRUE){
+                    # Pull data
+                    temp_data <- get(dgp)(obs)
+                    
+                    # Estimate model
+                    returned <- get(estimator)(temp_data)  
+                    
+                    # Check: any SEs in the millions?  If not (meaning everything
+                    # looks fine), break out of while and advance to next draw.
+                    seTmp <- returned[[1]] %>% bind_rows %>% select(contains("se.")) %>% max(na.rm=TRUE)
+                    if(max(seTmp)<1e6){
+                        # Store results
+                        MC_results[[i]] <- returned[[1]]
+                        modObjs[[i]] <- returned[[2]]
+                        
+                        # Advance counter
+                        incProgress(1/reps, detail = paste(i, " of ", reps))  
+                        
+                        # Break out of the while manually, to speed up run time
+                        break
+                    }
+                }
             }
+            
             # return the results of the estimation.
             return(list(MC_results, temp_data, modObjs))
             
